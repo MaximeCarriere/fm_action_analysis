@@ -42,12 +42,6 @@ GROUPS_AREAS = {
     "Articulatory": ["PFI", "PMI", "M1I"],
 }
 
-# Condition colours for bar plots.
-COND_PALETTE = {
-    "Blind":   "#6A00FF",   # electric purple
-    "Sighted": "#FFD500",   # electric yellow
-}
-
 # Raw per-subject connection files, keyed by paradigm.
 CONNECTION_FILES = {
     "P1": "connections_area_P1.txt",
