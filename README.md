@@ -7,8 +7,19 @@ small, reproducible packages.
 
 ## Paper
 
-> **Title:** _TODO — add manuscript title_
-> **Authors:** _TODO — add author list_
+> **Visual cortex recruitment in blind individuals: Phonological, action or
+> semantic representation? A deep brain-constrained neural network simulation**
+>
+> Maxime Carriere<sup>1,\*</sup>, Rosario Tomasello<sup>1,2,3</sup>
+>
+> <sup>1</sup> Brain Language Laboratory, Department of Philosophy and Humanities,
+> WE4, Freie Universität Berlin, 14195 Berlin, Germany
+> <sup>2</sup> Cognitive Sciences, Department of Psychology, University of
+> Potsdam, Potsdam, Germany
+> <sup>3</sup> Cluster of Excellence "Matters of Activity. Image Space Material",
+> Humboldt-Universität zu Berlin, 10099 Berlin, Germany
+> <sup>\*</sup> Corresponding author: carriere.maxime93@gmail.com
+>
 > **Keywords:** Congenital Blindness · Hebbian Learning · Visual Cortex ·
 > Computational modelling · Semantic processing
 
@@ -19,7 +30,8 @@ semantic learning — using brain-constrained neural-network (BCN) modelling of 
 cortical areas. Phase 1 models action execution and phonological word-form
 learning; Phase 2 models symbolic word–meaning association.
 
-<sub>(Title/authors were not present in `Manuscript_v6.docx`; please fill in.)</sub>
+The model itself is available for NEST at
+[github.com/MaximeCarriere/cogninest](https://github.com/MaximeCarriere/cogninest).
 
 Two independent analyses live here:
 
