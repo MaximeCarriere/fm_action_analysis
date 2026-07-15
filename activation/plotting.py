@@ -120,6 +120,84 @@ def plot_timecourse_grid(frame, paradigm, presentation, *, spe=None, window=None
     plt.show()
 
 
+def plot_timecourse_progression(frame, paradigm, cond, *, presentations=None,
+                                stim_lt="auto", xlim=None, ylim=None, title=None,
+                                save_path=None, fontsize=26):
+    """Plot how the per-area time-course evolves across presentations (learning).
+
+    A 2×6 grid for a single condition, with one line per presentation shaded on a
+    cool→warm gradient (early→late). Mirrors the connectivity progression view but
+    for activation.
+
+    Parameters
+    ----------
+    frame : analysis frame from ``load_activation``.
+    paradigm : 'P1' or 'P2'.
+    cond : 'Blind' or 'Sighted'.
+    presentations : presentations to overlay (default: all present, sorted).
+    """
+    cfg = C.PARADIGMS[paradigm]
+    if presentations is None:
+        presentations = sorted(frame["Presentation"].unique())
+    else:
+        presentations = sorted(presentations)
+    if stim_lt == "auto":
+        stim_lt = cfg["plot_stim_lt"]
+    lim = _LIMITS[paradigm]
+    xlim = xlim or lim["xlim"]
+    ylim = ylim or lim["ylim"]
+
+    sns.set_theme(context="talk", style="whitegrid", rc={
+        "font.family": "DejaVu Sans", "axes.spines.top": False,
+        "axes.spines.right": False, "axes.edgecolor": "#3a3a3a",
+        "axes.linewidth": 1.2, "grid.linewidth": 0.6, "grid.color": "#d9d9d9",
+        "axes.labelcolor": "#212121", "xtick.color": "#212121", "ytick.color": "#212121",
+    })
+    grad = sns.color_palette("coolwarm", n_colors=len(presentations))
+
+    fig, axes = plt.subplots(2, 6, figsize=(22, 10),
+                             gridspec_kw={"wspace": 0.07, "hspace": 0.13})
+    handles = labels = None
+
+    for i in range(12):
+        ax = axes[i // 6, i % 6]
+        subset = frame[(frame["area"] == i) & (frame["Cond"] == cond)
+                       & (frame["Presentation"].isin(presentations))]
+        if stim_lt is not None:
+            subset = subset[subset["Stim"] < stim_lt]
+        if not subset.empty:
+            sns.lineplot(data=subset, x="stp", y="size", hue="Presentation",
+                         hue_order=presentations, palette=grad, ax=ax, linewidth=4,
+                         marker="o", markersize=8, markeredgecolor="black",
+                         markeredgewidth=0.5)
+            if handles is None:
+                handles, labels = ax.get_legend_handles_labels()
+        ax.set(xlabel="", ylabel="", xlim=xlim, ylim=ylim)
+        ax.set_title(C.AREA_ORDER[i], fontsize=fontsize + 4, fontweight="bold")
+        ax.tick_params(axis="x", labelrotation=70, labelsize=fontsize - 2 if i > 5 else 0)
+        ax.tick_params(axis="y", labelsize=fontsize - 2 if i in (0, 6) else 0)
+        if ax.legend_:
+            ax.legend_.remove()
+
+    if handles:
+        fig.legend(handles, labels, title="Presentations", title_fontsize=fontsize,
+                   fontsize=fontsize - 2, loc="center right",
+                   bbox_to_anchor=(1.02, 0.5), borderaxespad=0.1)
+    fig.suptitle(title or f"Time Course Activation {paradigm}  ·  {cond}",
+                 fontsize=fontsize + 5, fontweight="bold", x=0.4, y=1.02, ha="center")
+    fig.supylabel("Number of Neurons", x=0.07, fontsize=fontsize)
+    fig.supxlabel("Time-Step", fontsize=fontsize)
+
+    if save_path is None:
+        save_path = FIGURES_DIR / f"timecourse_progression_{paradigm}_{cond}.jpg"
+    save_path = Path(save_path)
+    if not save_path.is_absolute():
+        save_path = FIGURES_DIR / save_path
+    fig.savefig(save_path, bbox_inches="tight", dpi=300, format=save_path.suffix.lstrip("."))
+    print(f"Saved → {save_path}")
+    plt.show()
+
+
 def _mark_stim_site(axes, spe, fontsize):
     """Draw a red arrow into the panel of the stimulated area."""
     target = _STIM_TARGET.get(spe)

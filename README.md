@@ -45,6 +45,8 @@ fm_action_analysis/
 │   └── activation_analysis.ipynb
 ├── data/                               # generated datasets (gitignored)
 └── figures/                            # generated figures, JPEG (gitignored)
+    ├── connectivity/
+    └── activation/
 ```
 
 ## Setup
