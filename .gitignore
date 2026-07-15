@@ -1,0 +1,13 @@
+# Generated data & figures (rebuild with scripts/build_dataset.py / the notebook)
+data/
+figures/
+
+# Python
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+*.egg-info/
+.venv/
+
+# OS
+.DS_Store
