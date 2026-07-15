@@ -29,7 +29,8 @@ AREA_COLORS = {
 }
 
 # Condition colours for the time-course lines.
-COND_PALETTE = {"Blind": "#6A00FF", "Sighted": "#FFD500"}
+# Matches manuscript Fig. 2: Sighted = purple, Blind = yellow.
+COND_PALETTE = {"Sighted": "#6A00FF", "Blind": "#FFD500"}
 COND_ORDER = ["Sighted", "Blind"]
 
 # Area-index groupings used by the statistics (repeated-measures factors).

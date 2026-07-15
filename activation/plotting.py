@@ -3,10 +3,8 @@
 Each panel shows the number of active neurons over time-steps for Blind vs
 Sighted, with the half-max response window shaded and the stimulated area marked.
 
-Colour convention (shared with the connectivity figures): Blind = purple,
-Sighted = yellow. The original P1 notebook cell paired ``hue_order``/``palette``
-positionally in a way that swapped these; here the mapping is by condition name
-so both figure families agree.
+Colour convention (manuscript Fig. 2): Sighted = purple, Blind = yellow. The
+mapping is by condition name (not by ``hue_order`` position) so it is robust.
 """
 from __future__ import annotations
 

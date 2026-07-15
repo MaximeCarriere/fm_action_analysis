@@ -125,8 +125,13 @@ def activation_rm_anova(frame, window, presentation, spe=None, verbose=True):
 
 # ── post-hoc per-area Blind vs Sighted ───────────────────────────────────────
 
-def activation_posthoc(ab, verbose=True) -> pd.DataFrame:
-    """Per-area Blind-vs-Sighted Welch t-tests, FDR (BH) corrected."""
+def activation_posthoc(ab, verbose=True, method="bonferroni") -> pd.DataFrame:
+    """Per-area Blind-vs-Sighted Welch t-tests, multiple-comparison corrected.
+
+    Matches the manuscript: Bonferroni correction over the 12 area comparisons
+    (adjusted α = .05/12 ≈ .0042), i.e. an area is significant when its
+    corrected p-value < .05. Pass ``method='fdr_bh'`` for Benjamini-Hochberg FDR.
+    """
     rows = []
     for area in sorted(ab["area"].unique()):
         area_data = ab[ab["area"] == area]
@@ -138,8 +143,8 @@ def activation_posthoc(ab, verbose=True) -> pd.DataFrame:
                          "t": t, "p": p})
 
     out = pd.DataFrame(rows)
-    out["p_fdr"] = multipletests(out["p"], method="fdr_bh")[1]
-    out["sig"] = out["p_fdr"].apply(
+    out["p_corr"] = multipletests(out["p"], method=method)[1]
+    out["sig"] = out["p_corr"].apply(
         lambda p: "***" if p < .001 else "**" if p < .01 else "*" if p < .05 else "ns")
 
     if verbose:
